@@ -1,0 +1,15 @@
+# Data directories
+data/
+projects/
+plugins/
+sql/
+
+# Backup
+backup/
+
+# Docker
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

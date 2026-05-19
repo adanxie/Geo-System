@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  qgis-desktop:
+    build:
+      context: ./QGIS
+      dockerfile: .docker/qgis.dockerfile
+      args:
+        DOCKER_DEPS_TAG: latest
+    image: qgis-desktop:latest
+    container_name: qgis-desktop
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XAUTHORITY=/tmp/.docker.xauth
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./data:/data
+      - ./plugins:/plugins
+    network_mode: host
+    devices:
+      - /dev/dri:/dev/dri
+    stdin_open: true
+    tty: true
+
+  qgis-server:
+    image: qgis/qgis-server:latest
+    container_name: qgis-server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./projects:/projects
+      - ./data:/data
+    environment:
+      - QGIS_SERVER_LOG_LEVEL=1
+      - QGIS_SERVER_LOG_STDERR=1
+      - QGIS_PROJECT_FILE=/projects/demo.qgs
+    restart: unless-stopped
+
+  postgis:
+    image: postgis/postgis:16-3.4
+    container_name: qgis-postgis
+    environment:
+      - POSTGRES_USER=qgis
+      - POSTGRES_PASSWORD=qgis123
+      - POSTGRES_DB=qgis
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: qgis-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@qgis.local
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgis
+    restart: unless-stopped
+
+volumes:
+  postgis_data:
+  pgadmin_data:
