@@ -1,7 +1,8 @@
-# GEO 商业平台 - 系统架构设计
+# GEO 商业平台 - 系统架构设计 (简化版)
 
 | 版本 | 日期 | 作者 | 变更记录 |
 |------|------|------|----------|
+| v2.0 | 2026-05-22 | 架构团队 | 简化为单体架构，使用MySQL |
 | v1.0 | 2026-05-21 | 架构团队 | 初始版本 |
 
 ---
@@ -15,112 +16,39 @@ graph TB
     subgraph 客户端层
         Web[Web 浏览器]
         Mobile[移动 APP]
-        API_Client[第三方 API 调用]
     end
 
     subgraph 接入层
-        LB[负载均衡 Nginx]
-        CDN[CDN 内容分发]
-        WAF[Web 应用防火墙]
+        Nginx[Nginx 反向代理]
     end
 
     subgraph 应用层
-        subgraph 前端应用
-            Website[官网服务]
-            ClientApp[客户端应用]
-            AdminApp[管理后台]
-        end
-
-        subgraph 后端服务
-            API_Gateway[API 网关]
-            Auth_Service[认证服务]
-            User_Service[用户服务]
-            Content_Service[内容服务]
-            Campaign_Service[推广计划服务]
-            Platform_Service[平台集成服务]
-            Analytics_Service[分析服务]
-            Billing_Service[计费服务]
-            Notification_Service[通知服务]
-        end
-    end
-
-    subgraph 业务引擎层
-        GEO_Engine[GEO 优化引擎]
-        Rank_Monitor[排名监控引擎]
-        Data_Analytics[数据分析引擎]
-        AI_Assistant[AI 助手引擎]
+        Frontend[Next.js 前端应用<br/>(官网 + 客户端 + 管理后台)]
+        Backend[FastAPI 单体后端应用]
     end
 
     subgraph 数据层
-        PG[(PostgreSQL 主库)]
-        Redis[(Redis 缓存)]
-        ES[(Elasticsearch 搜索)]
-        TSDB[(时序数据库)]
-        S3[(对象存储)]
+        MySQL[(MySQL 8.0)]
+        Redis[(Redis 7 缓存)]
+        FileStorage[本地文件存储 / OSS]
     end
 
-    subgraph 基础设施层
-        K8s[Kubernetes 集群]
-        CI_CD[CI/CD 流水线]
-        Monitor[监控告警]
-        Logs[日志系统]
-    end
-
-    Web --> LB
-    Mobile --> LB
-    API_Client --> LB
-
-    LB --> CDN
-    LB --> WAF
-
-    WAF --> Website
-    WAF --> ClientApp
-    WAF --> AdminApp
-
-    Website --> API_Gateway
-    ClientApp --> API_Gateway
-    AdminApp --> API_Gateway
-
-    API_Gateway --> Auth_Service
-    API_Gateway --> User_Service
-    API_Gateway --> Content_Service
-    API_Gateway --> Campaign_Service
-    API_Gateway --> Platform_Service
-    API_Gateway --> Analytics_Service
-    API_Gateway --> Billing_Service
-    API_Gateway --> Notification_Service
-
-    Content_Service --> GEO_Engine
-    Campaign_Service --> Rank_Monitor
-    Analytics_Service --> Data_Analytics
-    ClientApp --> AI_Assistant
-
-    Auth_Service --> PG
-    User_Service --> PG
-    Content_Service --> PG
-    Content_Service --> S3
-    Campaign_Service --> PG
-    Campaign_Service --> Redis
-    Platform_Service --> PG
-    Analytics_Service --> ES
-    Analytics_Service --> TSDB
-    Billing_Service --> PG
-    Notification_Service --> Redis
-
-    PG --> K8s
-    Redis --> K8s
-    ES --> K8s
-    TSDB --> K8s
-    S3 --> K8s
+    Web --> Nginx
+    Mobile --> Nginx
+    Nginx --> Frontend
+    Frontend --> Backend
+    Backend --> MySQL
+    Backend --> Redis
+    Backend --> FileStorage
 ```
 
 ### 1.2 设计原则
 
-- **微服务架构** - 按业务域拆分独立服务
-- **高可用性** - 多副本部署、故障自动转移
-- **可扩展性** - 水平扩展、弹性伸缩
-- **安全性** - 零信任、分层防御
-- **可观测性** - 日志、监控、追踪三位一体
+- **单体架构** - 快速开发、易于部署
+- **简化技术栈** - 最小化运维成本
+- **高内聚低耦合** - 模块划分清晰
+- **安全性** - 基础安全防护
+- **可扩展** - 为未来演进预留空间
 
 ---
 
@@ -134,7 +62,7 @@ graph TB
 | UI 组件库 | shadcn/ui + Tailwind CSS | 现代化设计系统 |
 | 状态管理 | Zustand | 轻量级状态管理 |
 | 数据请求 | TanStack Query | 服务端状态管理 |
-| 图表 | ECharts / Recharts | 数据可视化 |
+| 图表 | Recharts | 数据可视化 |
 | 富文本编辑 | TipTap | 现代富文本编辑器 |
 
 ### 2.2 后端技术栈
@@ -144,33 +72,27 @@ graph TB
 | 语言 | Python 3.11+ | 主业务逻辑 |
 | Web 框架 | FastAPI | 高性能异步框架 |
 | ORM | SQLAlchemy 2.0 | 类型安全的 ORM |
-| 数据库 | PostgreSQL 15 | 主数据库 |
+| 数据库 | MySQL 8.0 | 主数据库 |
 | 缓存 | Redis 7 | 缓存和会话 |
-| 消息队列 | RabbitMQ / Redis Queue | 异步任务 |
-| 搜索引擎 | Elasticsearch 8 | 全文搜索 |
-| 时序数据库 | TimescaleDB / InfluxDB | 时序数据存储 |
-| 对象存储 | MinIO / AWS S3 | 文件存储 |
+| 任务调度 | APScheduler | 定时任务调度 |
+| 文件存储 | 本地文件系统 / 阿里云OSS | 文件存储 |
 
 ### 2.3 GEO 引擎技术栈
 
 | 组件 | 技术选型 | 说明 |
 |------|---------|------|
 | LLM 集成 | LangChain | 多 LLM 统一接口 |
-| 向量数据库 | Pinecone / Milvus | 向量相似度搜索 |
-| 内容分析 | spaCy / NLTK | NLP 处理 |
-| 模型部署 | vLLM / TGI | 模型推理加速 |
-| 监控调度 | Airflow | 定时任务调度 |
+| 内容分析 | 直接调用LLM | 简化NLP处理 |
+| 监控调度 | APScheduler | 定时任务调度 |
 
 ### 2.4 基础设施
 
 | 组件 | 技术选型 | 说明 |
 |------|---------|------|
-| 容器化 | Docker + Kubernetes | 容器编排 |
-| CI/CD | GitHub Actions / GitLab CI | 持续集成部署 |
-| 监控 | Prometheus + Grafana | 监控告警 |
-| 日志 | ELK Stack (Elasticsearch, Logstash, Kibana) | 日志收集分析 |
-| 追踪 | Jaeger / OpenTelemetry | 分布式追踪 |
-| 服务网格 | Istio | 服务治理 |
+| 容器化 | Docker Compose | 本地开发和部署 |
+| 部署 | 传统服务器部署 | 简单部署 |
+| 日志 | Python logging + 日志文件 | 简单日志管理 |
+| 监控 | 系统自带监控 | 基础监控 |
 
 ---
 
@@ -183,7 +105,6 @@ erDiagram
     USER ||--o{ CAMPAIGN : 创建
     USER ||--o{ CONTENT : 上传
     USER ||--o{ SUBSCRIPTION : 拥有
-    CAMPAIGN ||--o{ CAMPAIGN_CONTENT : 包含
     CAMPAIGN ||--o{ RANKING_RECORD : 产生
     CAMPAIGN ||--o{ OPTIMIZATION_LOG : 记录
     CONTENT ||--o{ CONTENT_VERSION : 有
@@ -192,25 +113,25 @@ erDiagram
     SUBSCRIPTION ||--o{ PLAN : 使用
 
     USER {
-        uuid id PK
+        char id PK
         string email UK
         string password_hash
         string name
         string avatar_url
-        jsonb settings
+        json settings
         datetime created_at
         datetime updated_at
     }
 
     CAMPAIGN {
-        uuid id PK
-        uuid user_id FK
+        char id PK
+        char user_id FK
         string name
         text description
-        jsonb target_keywords
-        jsonb target_platforms
+        json target_keywords
+        json target_platforms
         enum status
-        jsonb config
+        json config
         datetime start_date
         datetime end_date
         datetime created_at
@@ -218,76 +139,76 @@ erDiagram
     }
 
     CONTENT {
-        uuid id PK
-        uuid user_id FK
+        char id PK
+        char user_id FK
         string title
         text content
         string content_type
         string source_url
-        jsonb metadata
+        json metadata
         float geo_score
         datetime created_at
         datetime updated_at
     }
 
     CONTENT_VERSION {
-        uuid id PK
-        uuid content_id FK
+        char id PK
+        char content_id FK
         int version
         text content
-        jsonb diff
-        uuid created_by FK
+        json diff
+        char created_by FK
         datetime created_at
     }
 
     PLATFORM {
-        uuid id PK
+        char id PK
         string name
         string code UK
         string api_endpoint
-        jsonb config
+        json config
         boolean active
     }
 
     RANKING_RECORD {
-        uuid id PK
-        uuid campaign_id FK
-        uuid content_id FK
-        uuid platform_id FK
+        char id PK
+        char campaign_id FK
+        char content_id FK
+        char platform_id FK
         string keyword
         int rank_position
-        jsonb metrics
+        json metrics
         datetime recorded_at
     }
 
     OPTIMIZATION_LOG {
-        uuid id PK
-        uuid campaign_id FK
-        uuid content_id FK
+        char id PK
+        char campaign_id FK
+        char content_id FK
         string action_type
-        jsonb before_state
-        jsonb after_state
+        json before_state
+        json after_state
         text suggestions
         datetime created_at
     }
 
     SUBSCRIPTION {
-        uuid id PK
-        uuid user_id FK
-        uuid plan_id FK
+        char id PK
+        char user_id FK
+        char plan_id FK
         enum status
         datetime start_date
         datetime end_date
-        jsonb metadata
+        json metadata
     }
 
     PLAN {
-        uuid id PK
+        char id PK
         string name
         text description
         decimal price_monthly
         decimal price_yearly
-        jsonb features
+        json features
         int max_campaigns
         int max_platforms
         boolean active
@@ -300,83 +221,84 @@ erDiagram
 
 ```sql
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id CHAR(36) PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     name VARCHAR(100),
     avatar_url VARCHAR(500),
-    settings JSONB DEFAULT '{}',
+    settings JSON DEFAULT ('{}'),
     is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_created_at ON users(created_at);
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_users_email (email),
+    INDEX idx_users_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 #### 推广计划表 (campaigns)
 
 ```sql
 CREATE TABLE campaigns (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id),
+    id CHAR(36) PRIMARY KEY,
+    user_id CHAR(36) NOT NULL,
     name VARCHAR(200) NOT NULL,
     description TEXT,
-    target_keywords JSONB DEFAULT '[]',
-    target_platforms JSONB DEFAULT '[]',
-    status VARCHAR(50) DEFAULT 'draft', -- draft, active, paused, completed
-    config JSONB DEFAULT '{}',
-    start_date TIMESTAMPTZ,
-    end_date TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_campaigns_user_id ON campaigns(user_id);
-CREATE INDEX idx_campaigns_status ON campaigns(status);
-CREATE INDEX idx_campaigns_created_at ON campaigns(created_at);
+    target_keywords JSON DEFAULT ('[]'),
+    target_platforms JSON DEFAULT ('[]'),
+    status VARCHAR(50) DEFAULT 'draft',
+    config JSON DEFAULT ('{}'),
+    start_date DATETIME,
+    end_date DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX idx_campaigns_user_id (user_id),
+    INDEX idx_campaigns_status (status),
+    INDEX idx_campaigns_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 #### 内容表 (contents)
 
 ```sql
 CREATE TABLE contents (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id),
+    id CHAR(36) PRIMARY KEY,
+    user_id CHAR(36) NOT NULL,
     title VARCHAR(500) NOT NULL,
     content TEXT,
-    content_type VARCHAR(50), -- article, webpage, pdf, etc.
+    content_type VARCHAR(50),
     source_url VARCHAR(1000),
-    metadata JSONB DEFAULT '{}',
+    metadata JSON DEFAULT ('{}'),
     geo_score DECIMAL(5,2),
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_contents_user_id ON contents(user_id);
-CREATE INDEX idx_contents_geo_score ON contents(geo_score DESC);
-CREATE INDEX idx_contents_created_at ON contents(created_at);
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX idx_contents_user_id (user_id),
+    INDEX idx_contents_geo_score (geo_score DESC),
+    INDEX idx_contents_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 #### 排名记录表 (ranking_records)
 
 ```sql
 CREATE TABLE ranking_records (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    campaign_id UUID NOT NULL REFERENCES campaigns(id),
-    content_id UUID REFERENCES contents(id),
-    platform_id UUID NOT NULL REFERENCES platforms(id),
+    id CHAR(36) PRIMARY KEY,
+    campaign_id CHAR(36) NOT NULL,
+    content_id CHAR(36),
+    platform_id CHAR(36) NOT NULL,
     keyword VARCHAR(500) NOT NULL,
     rank_position INTEGER,
-    metrics JSONB DEFAULT '{}',
-    recorded_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_ranking_campaign_id ON ranking_records(campaign_id);
-CREATE INDEX idx_ranking_platform_id ON ranking_records(platform_id);
-CREATE INDEX idx_ranking_recorded_at ON ranking_records(recorded_at DESC);
-CREATE INDEX idx_ranking_keyword ON ranking_records(keyword);
+    metrics JSON DEFAULT ('{}'),
+    recorded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id),
+    FOREIGN KEY (content_id) REFERENCES contents(id),
+    FOREIGN KEY (platform_id) REFERENCES platforms(id),
+    INDEX idx_ranking_campaign_id (campaign_id),
+    INDEX idx_ranking_platform_id (platform_id),
+    INDEX idx_ranking_recorded_at (recorded_at DESC),
+    INDEX idx_ranking_keyword (keyword)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 ---
@@ -455,27 +377,42 @@ CREATE INDEX idx_ranking_keyword ON ranking_records(keyword);
 
 ---
 
-## 5. 微服务设计
+## 5. 应用模块设计
 
-### 5.1 服务划分
+### 5.1 模块划分
 
-| 服务名称 | 职责 | 技术栈 |
-|---------|------|--------|
-| auth-service | 用户认证、权限管理 | FastAPI + JWT |
-| user-service | 用户管理、组织管理 | FastAPI + PostgreSQL |
-| content-service | 内容管理、内容分析 | FastAPI + PostgreSQL + S3 |
-| campaign-service | 推广计划、任务调度 | FastAPI + PostgreSQL + Redis |
-| platform-service | 平台集成、API 封装 | FastAPI + 外部 API |
-| analytics-service | 数据分析、报表生成 | FastAPI + Elasticsearch |
-| billing-service | 订阅管理、账单支付 | FastAPI + PostgreSQL |
-| notification-service | 消息通知、推送 | FastAPI + Redis + WebSocket |
+| 模块名称 | 职责 |
+|---------|------|
+| auth | 用户认证、权限管理 |
+| user | 用户管理、组织管理 |
+| content | 内容管理、内容分析 |
+| campaign | 推广计划、任务调度 |
+| platform | 平台集成、API 封装 |
+| analytics | 数据分析、报表生成 |
+| billing | 订阅管理、账单支付 |
+| notification | 消息通知、推送 |
 
-### 5.2 服务通信
+### 5.2 目录结构
 
-- **同步通信**: gRPC / REST API
-- **异步通信**: RabbitMQ / Kafka 消息队列
-- **服务发现**: Kubernetes DNS / Consul
-- **配置管理**: etcd / Kubernetes ConfigMap
+```
+geo-platform/
+├── frontend/              # Next.js 前端应用
+│   ├── app/
+│   │   ├── (website)/     # 官网
+│   │   ├── (client)/      # 客户端
+│   │   └── (admin)/       # 管理后台
+│   └── ...
+├── backend/               # FastAPI 后端应用
+│   ├── app/
+│   │   ├── api/           # API 路由
+│   │   ├── models/        # 数据模型
+│   │   ├── schemas/       # Pydantic schemas
+│   │   ├── services/      # 业务逻辑
+│   │   ├── core/          # 核心配置
+│   │   └── tasks/         # 定时任务
+│   └── ...
+└── docker-compose.yml
+```
 
 ---
 
@@ -563,36 +500,79 @@ graph TB
 
 ## 8. 部署架构
 
-### 8.1 Kubernetes 部署
+### 8.1 Docker Compose 部署
 
 ```yaml
-# 简化的 Kubernetes 部署结构
-geo-platform/
-├── namespaces/
-│   └── geo-platform.yaml
-├── deployments/
-│   ├── website.yaml
-│   ├── client-app.yaml
-│   ├── admin-app.yaml
-│   ├── api-gateway.yaml
-│   ├── auth-service.yaml
-│   ├── user-service.yaml
-│   └── ...
-├── services/
-│   ├── website.yaml
-│   ├── client-app.yaml
-│   └── ...
-├── configmaps/
-│   └── app-config.yaml
-└── secrets/
-    └── app-secrets.yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: geo_platform
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    environment:
+      - DATABASE_URL=mysql://root:root@mysql:3306/geo_platform
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./uploads:/app/uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+
+  frontend:
+    build: ./frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  mysql_data:
+  redis_data:
 ```
 
-### 8.2 环境划分
+### 8.2 简化部署方式
+
+| 部署方式 | 说明 | 适用场景 |
+|---------|------|---------|
+| Docker Compose | 一键启动所有服务 | 本地开发、测试环境 |
+| 传统服务器 | 直接部署到云服务器 | 生产环境（小型规模） |
+| 云平台部署 | 阿里云/腾讯云容器服务 | 生产环境（中型规模） |
+
+### 8.3 环境划分
 
 | 环境 | 用途 | URL |
 |------|------|-----|
 | 开发环境 | 本地开发 | localhost:3000 |
 | 测试环境 | 功能测试 | test.geo-platform.com |
-| 预发布环境 | 回归验证 | staging.geo-platform.com |
 | 生产环境 | 正式对外 | www.geo-platform.com |

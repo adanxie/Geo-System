@@ -1,7 +1,8 @@
-# GEO 商业平台 - 开发计划
+# GEO 商业平台 - 开发计划 (简化版)
 
 | 版本 | 日期 | 作者 | 变更记录 |
 |------|------|------|----------|
+| v2.0 | 2026-05-22 | 项目管理团队 | 简化为单体架构，MySQL数据库 |
 | v1.0 | 2026-05-21 | 项目管理团队 | 初始版本 |
 
 ---
@@ -45,9 +46,9 @@ gantt
 
 ### 2.2 时间规划
 
-- **总时长**: 12 周
+- **总时长**: 11 周 (简化后节省1周)
 - **开始时间**: 2026-05-21
-- **发布时间**: 2026-08-15
+- **发布时间**: 2026-08-08
 
 ### 2.3 MVP 功能范围
 
@@ -77,21 +78,20 @@ gantt
 - [ ] 排名监控 (ChatGPT, Gemini, Claude)
 - [ ] 基础数据采集
 
-### 2.4 里程碑 1.1 - 基础设施 (2 周)
+### 2.4 里程碑 1.1 - 基础设施 (1 周)
 
-**目标**: 搭建开发和部署基础设施
+**目标**: 搭建简单高效的开发环境
 
 **任务清单**:
 - [ ] 代码仓库初始化
-- [ ] CI/CD 流水线搭建
-- [ ] 开发环境配置 (Docker Compose)
-- [ ] 数据库初始化和迁移脚本
-- [ ] 基础 API 框架搭建
+- [ ] Docker Compose 开发环境配置 (MySQL + Redis + Backend + Frontend)
+- [ ] 数据库初始化和迁移脚本 (Alembic)
+- [ ] FastAPI 基础框架搭建
 - [ ] 用户认证系统 (JWT)
-- [ ] 监控和日志基础配置
+- [ ] 简单的日志配置
 
 **交付物**:
-- 可运行的开发环境
+- 一键启动的开发环境 (`docker-compose up`)
 - 基础工程化配置
 - 团队开发规范文档
 
@@ -297,7 +297,46 @@ graph LR
 
 ---
 
-## 8. 上线检查清单
+## 8. 快速启动指南
+
+### 8.1 本地开发环境启动
+
+```bash
+# 1. 克隆代码
+git clone <repository-url>
+cd geo-platform
+
+# 2. 启动所有服务
+docker-compose up -d
+
+# 3. 初始化数据库
+docker-compose exec backend alembic upgrade head
+
+# 4. 访问应用
+# 官网: http://localhost:3000
+# API文档: http://localhost:8000/docs
+```
+
+### 8.2 开发流程
+
+```bash
+# 查看服务状态
+docker-compose ps
+
+# 查看日志
+docker-compose logs -f backend
+docker-compose logs -f frontend
+
+# 停止服务
+docker-compose down
+
+# 清理数据（谨慎使用）
+docker-compose down -v
+```
+
+---
+
+## 9. 上线检查清单
 
 ### MVP 发布检查清单
 
@@ -306,8 +345,7 @@ graph LR
 - [ ] 性能测试通过
 - [ ] 安全审计通过
 - [ ] 用户文档完成
-- [ ] 运维手册完成
-- [ ] 监控告警配置
+- [ ] Docker Compose 部署配置完成
 - [ ] 回滚方案准备
 - [ ] 首屏性能优化
 - [ ] SEO 基础优化
