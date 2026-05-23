@@ -25,9 +25,20 @@ services:
   backend:
     build: ./backend
     environment:
-      - DATABASE_URL=mysql+pymysql://root:root@mysql:3306/geo_platform
-      - REDIS_URL=redis://redis:6379/0
+      # 数据库配置
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=geo_platform
+      # Redis 配置
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      # JWT 配置
       - SECRET_KEY=dev-secret-key-change-in-production
+      # CORS 配置
+      - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
     volumes:
       - ./backend:/app
     ports:
