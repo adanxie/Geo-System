@@ -67,7 +67,7 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900">GEO Platform</span>
@@ -88,7 +88,7 @@ export default function PricingPage() {
         </div>
       </nav>
 
-      <section className="pt-32 pb-16 px-4">
+      <section className="pt-32 pb-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-8">
             <ArrowLeft className="w-4 h-4" />
@@ -96,7 +96,7 @@ export default function PricingPage() {
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             简单透明的
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> 价格方案</span>
+            <span className="text-blue-600"> 价格方案</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             选择适合您需求的方案，随时可以升级或降级
@@ -112,12 +112,12 @@ export default function PricingPage() {
                 key={index}
                 className={`relative p-8 rounded-2xl transition-all duration-300 ${
                   plan.highlight
-                    ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-xl'
+                    ? 'bg-blue-600 text-white shadow-xl'
                     : 'bg-white border border-gray-100 hover:shadow-lg'
                 }`}
               >
                 {plan.badge && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-orange-500 text-white text-sm rounded-full">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-800 text-white text-sm rounded-full">
                     {plan.badge}
                   </div>
                 )}
@@ -138,7 +138,7 @@ export default function PricingPage() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className={`flex items-start gap-2 ${plan.highlight ? 'text-blue-50' : 'text-gray-600'}`}>
-                      <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.highlight ? 'text-green-300' : 'text-green-500'}`} />
+                      <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.highlight ? 'text-blue-200' : 'text-blue-600'}`} />
                       <span className="text-sm">{feature}</span>
                     </li>
                   ))}
@@ -194,13 +194,13 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section className="py-20 px-4 bg-blue-50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">还有问题？</h2>
           <p className="text-lg text-gray-600 mb-8">我们的销售团队随时为您提供帮助</p>
           <Link
             href="/about"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all text-lg font-medium"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all text-lg font-medium"
           >
             联系我们
             <ArrowRight className="w-5 h-5" />
@@ -213,7 +213,7 @@ export default function PricingPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">GEO Platform</span>

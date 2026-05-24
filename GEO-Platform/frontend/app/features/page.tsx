@@ -1,15 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Sparkles, Search, TrendingUp, Users, Target, FileText, BarChart3, ArrowLeft, CheckCircle, ArrowRight } from 'lucide-react'
 
 export default function FeaturesPage() {
-  const router = useRouter()
-
   const features = [
     {
-      icon: <TrendingUp className="w-10 h-10 text-blue-500" />,
+      icon: <TrendingUp className="w-10 h-10 text-blue-600" />,
       title: '多平台排名监控',
       description: '实时监控您的内容在ChatGPT、Gemini、Claude等多个AI搜索平台的排名变化',
       details: [
@@ -20,7 +17,7 @@ export default function FeaturesPage() {
       ]
     },
     {
-      icon: <Search className="w-10 h-10 text-green-500" />,
+      icon: <Search className="w-10 h-10 text-blue-500" />,
       title: 'AI内容优化建议',
       description: '基于机器学习算法，为您的内容提供专业的GEO优化建议',
       details: [
@@ -31,7 +28,7 @@ export default function FeaturesPage() {
       ]
     },
     {
-      icon: <Target className="w-10 h-10 text-purple-500" />,
+      icon: <Target className="w-10 h-10 text-blue-700" />,
       title: '推广计划管理',
       description: '一站式管理您的所有GEO推广计划，轻松追踪效果',
       details: [
@@ -42,7 +39,7 @@ export default function FeaturesPage() {
       ]
     },
     {
-      icon: <FileText className="w-10 h-10 text-orange-500" />,
+      icon: <FileText className="w-10 h-10 text-blue-400" />,
       title: '智能内容生成',
       description: '利用AI自动生成优化后的内容，提升创作效率',
       details: [
@@ -53,7 +50,7 @@ export default function FeaturesPage() {
       ]
     },
     {
-      icon: <BarChart3 className="w-10 h-10 text-cyan-500" />,
+      icon: <BarChart3 className="w-10 h-10 text-blue-600" />,
       title: '数据可视化分析',
       description: '直观的图表和报表，让您随时了解优化效果',
       details: [
@@ -64,7 +61,7 @@ export default function FeaturesPage() {
       ]
     },
     {
-      icon: <Users className="w-10 h-10 text-pink-500" />,
+      icon: <Users className="w-10 h-10 text-blue-500" />,
       title: '团队协作',
       description: '完善的权限管理，高效的团队协作体验',
       details: [
@@ -82,7 +79,7 @@ export default function FeaturesPage() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900">GEO Platform</span>
@@ -103,7 +100,7 @@ export default function FeaturesPage() {
         </div>
       </nav>
 
-      <section className="pt-32 pb-20 px-4">
+      <section className="pt-32 pb-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-8">
             <ArrowLeft className="w-4 h-4" />
@@ -111,7 +108,7 @@ export default function FeaturesPage() {
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             强大的功能，助力您的
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> GEO 优化</span>
+            <span className="text-blue-600"> GEO 优化</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             全方位的生成式搜索引擎优化工具，让您的内容在AI搜索中脱颖而出
@@ -133,7 +130,7 @@ export default function FeaturesPage() {
                 <ul className="space-y-3">
                   {feature.details.map((detail, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <span className="text-gray-600 text-sm">{detail}</span>
                     </li>
                   ))}
@@ -144,13 +141,13 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section className="py-20 px-4 bg-blue-50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">准备好开始您的GEO优化之旅了吗？</h2>
           <p className="text-lg text-gray-600 mb-8">现在就注册，享受14天免费试用</p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all text-lg font-medium"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all text-lg font-medium"
           >
             立即开始
             <ArrowRight className="w-5 h-5" />
@@ -163,7 +160,7 @@ export default function FeaturesPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">GEO Platform</span>

@@ -103,4 +103,13 @@ export const aiAPI = {
   analyzeContent: (data: any) => api.post('/ai/analyze', data),
 }
 
+export const systemAPI = {
+  getConfig: (key: string) => api.get(`/system/config/${key}`),
+  getAllConfigs: (category?: string) => api.get('/system/configs', { params: { category } }),
+  createConfig: (data: any) => api.post('/system/config', data),
+  updateConfig: (key: string, data: any) => api.put(`/system/config/${key}`, data),
+  getTheme: () => api.get('/system/theme'),
+  updateTheme: (data: any) => api.post('/system/theme', data),
+}
+
 export default api

@@ -24,7 +24,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900">GEO Platform</span>
@@ -45,7 +45,7 @@ export default function AboutPage() {
         </div>
       </nav>
 
-      <section className="pt-32 pb-20 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section className="pt-32 pb-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-8">
             <ArrowLeft className="w-4 h-4" />
@@ -53,7 +53,7 @@ export default function AboutPage() {
           </Link>
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              关于 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">GEO Platform</span>
+              关于 <span className="text-blue-600">GEO Platform</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               我们致力于帮助内容在AI搜索时代脱颖而出
@@ -77,22 +77,22 @@ export default function AboutPage() {
             </p>
             <div className="flex gap-4">
               <div className="flex items-center gap-2 text-gray-600">
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-blue-600" />
                 <span>数据驱动的优化策略</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-blue-600" />
                 <span>持续迭代的产品设计</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-blue-600" />
                 <span>专业的技术支持</span>
               </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[1,2,3,4].map((i) => (
-              <div key={i} className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl aspect-square flex items-center justify-center">
+              <div key={i} className="bg-blue-600 rounded-2xl aspect-square flex items-center justify-center">
                 <TrendingUp className="w-12 h-12 text-white opacity-50" />
               </div>
             ))}
@@ -138,7 +138,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gray-50">
+      <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">联系我们</h2>
           <p className="text-gray-600 mb-12">有任何问题，欢迎随时联系我们</p>
@@ -149,12 +149,12 @@ export default function AboutPage() {
               <p className="text-gray-600">contact@geo-platform.com</p>
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <Phone className="w-10 h-10 text-green-600 mx-auto mb-4" />
+              <Phone className="w-10 h-10 text-blue-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">电话</h3>
               <p className="text-gray-600">400-888-8888</p>
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <MapPin className="w-10 h-10 text-purple-600 mx-auto mb-4" />
+              <MapPin className="w-10 h-10 text-blue-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">地址</h3>
               <p className="text-gray-600">北京市朝阳区科技园区</p>
             </div>
@@ -162,7 +162,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section className="py-20 px-4 bg-blue-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">数据说话</h2>
           <div className="grid md:grid-cols-4 gap-8">
@@ -181,7 +181,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">GEO Platform</span>
