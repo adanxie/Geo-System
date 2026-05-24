@@ -1,15 +1,21 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Search, TrendingUp, Users, Sparkles, ArrowRight, CheckCircle } from 'lucide-react'
 
 export default function Home() {
   const [email, setEmail] = useState('')
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert(`感谢您的关注！我们会尽快联系您: ${email}`)
-    setEmail('')
+    router.push('/register')
+  }
+
+  const handleLogin = () => {
+    router.push('/login')
   }
 
   const features = [
@@ -51,10 +57,10 @@ export default function Home() {
             <a href="#about" className="text-gray-600 hover:text-blue-600 transition-colors">关于</a>
           </div>
           <div className="flex items-center gap-4">
-            <button className="hidden sm:block px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors">登录</button>
-            <button className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button onClick={handleLogin} className="hidden sm:block px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors">登录</button>
+            <Link href="/register" className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
               免费试用
-            </button>
+            </Link>
           </div>
         </div>
       </nav>
@@ -162,15 +168,16 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <button
-                  className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                <Link
+                  href="/register"
+                  className={`w-full py-3 rounded-lg font-medium transition-colors text-center block ${
                     plan.highlight
                       ? 'bg-white text-blue-600 hover:bg-blue-50'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
                   }`}
                 >
                   选择套餐
-                </button>
+                </Link>
               </div>
             ))}
           </div>
@@ -192,8 +199,8 @@ export default function Home() {
             <div>
               <h4 className="text-white font-semibold mb-4">产品</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">功能介绍</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">价格套餐</a></li>
+                <li><Link href="#features" className="hover:text-white transition-colors">功能介绍</Link></li>
+                <li><Link href="#pricing" className="hover:text-white transition-colors">价格套餐</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">更新日志</a></li>
               </ul>
             </div>
