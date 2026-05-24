@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { ThemeProvider } from './components/ThemeProvider'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 
 export const metadata: Metadata = {
   title: 'GEO Platform - Generative Engine Optimization',
@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN">
-      <body className="min-h-screen bg-gray-50">
+    <html lang="zh-CN" suppressHydrationWarning>
+      <body>
         <ThemeProvider>
           {children}
         </ThemeProvider>
