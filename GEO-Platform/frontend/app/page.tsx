@@ -52,9 +52,9 @@ export default function Home() {
             <span className="text-xl font-bold text-gray-900">GEO Platform</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors">功能</a>
-            <a href="#pricing" className="text-gray-600 hover:text-blue-600 transition-colors">价格</a>
-            <a href="#about" className="text-gray-600 hover:text-blue-600 transition-colors">关于</a>
+            <Link href="/features" className="text-gray-600 hover:text-blue-600 transition-colors">功能</Link>
+            <Link href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors">价格</Link>
+            <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">关于</Link>
           </div>
           <div className="flex items-center gap-4">
             <button onClick={handleLogin} className="hidden sm:block px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors">登录</button>
@@ -199,15 +199,15 @@ export default function Home() {
             <div>
               <h4 className="text-white font-semibold mb-4">产品</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="#features" className="hover:text-white transition-colors">功能介绍</Link></li>
-                <li><Link href="#pricing" className="hover:text-white transition-colors">价格套餐</Link></li>
+                <li><Link href="/features" className="hover:text-white transition-colors">功能介绍</Link></li>
+                <li><Link href="/pricing" className="hover:text-white transition-colors">价格套餐</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">更新日志</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">资源</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">帮助文档</a></li>
+                <li><Link href="/docs" className="hover:text-white transition-colors">帮助文档</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">API文档</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">最佳实践</a></li>
               </ul>
@@ -215,7 +215,7 @@ export default function Home() {
             <div>
               <h4 className="text-white font-semibold mb-4">公司</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">关于我们</a></li>
+                <li><Link href="/about" className="hover:text-white transition-colors">关于我们</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">联系我们</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">隐私政策</a></li>
               </ul>
